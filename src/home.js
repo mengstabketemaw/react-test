@@ -34,8 +34,15 @@ function Home() {
           <div data-testid='home-component' style={homeStyle}>
             <div style={buttonContainerStyle}>
                {/* Hint: Implement this */}
-                <button onClick={()=>nav("/candidate/registration")} data-testid="register-button" style={buttonStyle}>Register Candidate</button>
-                <button onClick={()=>nav("/candidate/list")} data-testid="list-button" style={buttonStyle}>List Candidates</button>
+                <button
+                    onClick={()=>nav("/candidate/registration")}
+                    data-testid="register-button"
+                    style={buttonStyle}>Register Candidate
+                </button>
+                <button onClick={()=>nav("/candidate/list")}
+                        data-testid="list-button"
+                        style={buttonStyle}>List Candidates
+                </button>
             </div>
           </div>
       </div>

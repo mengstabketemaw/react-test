@@ -68,31 +68,27 @@ const profileCardStyle = {
 };
 function CandidateList() {
   const [searchText, setSearchText] = useState('');
-  const [filteredCandidates, setFilteredCandidates] = useState('');
+  const [filteredCandidates, setFilteredCandidates] = useState([]);
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     const storedCandidates = localStorage.getItem('candidates');
     if (storedCandidates) {
       setCandidates(JSON.parse(storedCandidates))
+      setFilteredCandidates(JSON.parse(storedCandidates));
     }
   }, []);
     
 
   const handleSearch = () => {
     let c = candidates.filter(cand=>cand.skills.some(skill=>skill === searchText));
-    setCandidates(c);
-    setFilteredCandidates(c.length);
+    setFilteredCandidates(c);
    // Hint: Implement this
   };
 
   const handleListAll = () => {
-    // Hint: Implement this
-    const storedCandidates = localStorage.getItem('candidates');
-    if (storedCandidates) {
-      setCandidates(JSON.parse(storedCandidates))
-    }
-    setFilteredCandidates('');
+    setFilteredCandidates(candidates);
+    setSearchText('');
   };
 
   return (
@@ -116,9 +112,9 @@ function CandidateList() {
           List All
         </button>
       </div>
-      {filteredCandidates.length !== 0 && <p data-testid="profiles-found-tag">{filteredCandidates} has been found</p>}
+      <h2 data-testid="profiles-found-tag">{filteredCandidates.length} profiles found</h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-        {candidates.map(candidate=>(
+        {filteredCandidates.map(candidate=>(
             <div className="profile-card" data-testid="profile-card">
               <div key={candidate.id} style={{ ...profileCardStyle, textAlign: 'left', marginRight: '10px' }}>
                 <h2 style={{ marginBottom: '10px' }}>Role: {candidate.role}</h2>

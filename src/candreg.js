@@ -88,6 +88,8 @@ function CandidateRegistration() {
   const [highlightInput, setHighlight] = useState(false); 
 
   const handleAddSkill = () => {
+    if(formData.skills.length >=5 )
+      return;
     setFormData(prev=>({...prev, skills:[...prev.skills, prev.skill]}))
     setFormData(prev=>({...prev, skill:""}))
   };
@@ -95,16 +97,15 @@ function CandidateRegistration() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if(candidates.find(cand => cand.email === formData.email)){
-      setRegistrationStatus("Email Already Exist!");
+      setRegistrationStatus("Email already exists");
       setHighlight(true);
     } else {
       setCandidates(prev=>[...prev, formData]);
       setHighlight(false);
-      setRegistrationStatus("Candidate Profile Created");
+      setRegistrationStatus("Candidate profile created");
       handleReset();
     }
   };
-
   const handleReset = () => {
     setFormData({
       name: '',
@@ -114,7 +115,6 @@ function CandidateRegistration() {
       skills: [],
     });
   };
-
   useEffect(() => {
       const storedCandidates = localStorage.getItem('candidates');
       if (storedCandidates) {
@@ -125,8 +125,7 @@ function CandidateRegistration() {
   useEffect(()=>{
     localStorage.setItem('candidates', JSON.stringify(candidates));
   },[candidates])
-
-    const getHandler = () => e => {
+  const getHandler = () => e => {
       setFormData(prev=>({...prev, [e.target.name] : e.target.value}))
     }
 
@@ -145,10 +144,9 @@ function CandidateRegistration() {
                     placeholder="Name"
                     required
                     style={inputStyle}
-                    pattern="[a-zA-Z0-9/s]"
+                    pattern="[a-zA-Z0-9\s]+"
                     onChange={getHandler()}
                     data-testid='form-input-name'
-                    // onChange={() => {}} - Hint: Implement this
                   />
                 </div>
                 <div className="form-group" style={formGroupStyle}>
@@ -172,7 +170,7 @@ function CandidateRegistration() {
                     placeholder="Role"
                     data-testid='form-input-role'
                     required
-                    pattern="[a-zA-Z0-9/s]"
+                    pattern="[a-zA-Z0-9\s]+"
                     style={inputStyle}
                   />
                 </div>
@@ -208,7 +206,7 @@ function CandidateRegistration() {
                     data-testid="submit-btn"
                     type="submit"
                     style={sharpEdgeButtonStyle}
-                    disabled={formData.skills.length === 0}
+                    disabled={formData.skills.length === 0 || !(formData.email.trim() && formData.role.trim() && formData.name.trim())}
                   >
                     Register
                   </button>
